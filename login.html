@@ -6,20 +6,19 @@
     <title>Login Page</title>
     <script src="https://translate.google.com/translate_a/element.js?cb=initTranslate"></script>
     <style>
-        /* Global Styles */
         #google_translate_element {
-            display: inline-block;
-            margin-left: 10px;
-        }
-
-        .goog-te-gadget {
+            display: inline-block !important;
+            margin-left: 10px !important;  /* Adjust spacing */
+          }
+          
+          .goog-te-gadget {
             font-family: Arial, sans-serif !important;
             font-size: 14px !important;
-            color: white !important;
-        }
-
-        .goog-te-gadget select {
-            background: #fffefe;
+            color: #f2f1ed !important;
+          }
+          
+          .goog-te-gadget select {
+            background: #f2f1ed;  /* Match button color */
             color: rgb(15, 15, 15);
             border: none;
             padding: 5px;
@@ -27,60 +26,73 @@
             cursor: pointer;
             outline: none;
             border: solid 1px #0e0f0e;
-        }
-
-        /* Fix dropdown overlapping */
-        .goog-te-gadget .goog-te-combo {
+          }
+          
+          /* Fix dropdown overlapping */
+          .goog-te-gadget .goog-te-combo {
             height: 30px;
             font-size: 14px;
             padding: 5px;
-        }
-
-        /* Ensure dropdown stays inside navbar */
-        .goog-te-gadget {
+          }
+          
+          /* Ensure dropdown stays inside navbar */
+          .goog-te-gadget {
             display: flex;
             align-items: center;
-        }
-
-        /* Hide "Powered by Google" */
-        .goog-logo-link, .goog-te-gadget span {
+          }
+          
+          /* Hide "Powered by Google" */
+          .goog-logo-link, .goog-te-gadget span {
             display: none !important;
-        }
-
-        /* Hide floating translate bar */
-        body > .skiptranslate {
+          }
+          
+          /* Hide floating translate bar */
+          body > .skiptranslate {
             display: none !important;
-        }
-
+          }
+          
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #ffffff;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
+          font-family: 'Arial', sans-serif;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          background-color: #f2f1ed;
+          color: #333;
+          text-align: center;
         }
-
-        /* Navbar */
         .navbar {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: relative;
-            z-index: 10;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px 20px;
+          background-color: #f2f1ed;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          position: relative;
+          z-index: 10;
         }
-
         .navbar img {
-            height: 70px;
+          height: 70px;
+        }
+        .navbar .menu {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          
+        }
+        .navbar a {
+          text-decoration: none;
+          color: #333;
+          font-weight: bold;
+        }
+        .navbar .button {
+          background-color: #090a0a;
+          color: #fff;
+          padding: 8px 15px;
+          border-radius: 5px;
+          transition: background-color 0.3s;
+        }
+        .navbar .button:hover {
+          background-color: #0e0f0e;
         }
 
         .menu {
@@ -110,15 +122,30 @@
 
         /* Login Container */
         .login-container {
-            width: 900px;
-            height: 550px;
-            background: white;
+            width: 35vw;
+            height: 500px;
+            background: #f2f1ed;
             display: flex;
+            flex-direction: column;  /* Stack elements vertically */
+            align-items: center;     /* Center horizontally */
+            justify-content: center; /* Center vertically */
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             border-radius: 12px;
             overflow: hidden;
-            margin-top: 20px;
+            margin: 50px auto; /* Center the container */
+            text-align: center; /* Ensures all text inside is centered */
+            border: 1px solid black;
         }
+        .form-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center horizontally */
+            justify-content: center; /* Center vertically */
+            text-align: center; /* Center text inside */
+            padding: 40px;
+        }
+        
 
         /* Left Section (Image) */
         .image-section {
@@ -133,17 +160,7 @@
             width: 80%;
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Right Section (Form) */
-        .form-section {
-            width: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-        }
+        } 
 
         h2 {
             font-size: 26px;
@@ -158,26 +175,28 @@
 
         /* Input Fields */
         .input-box {
-            width: 100%;
+            width: 80%; /* Adjust width to fit within the container */
+             /* Set a maximum width to prevent it from becoming too wide */
             padding: 12px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
+            border: 1px solid #2c2b2b;
+            background-color: #f2f1ed;
             border-radius: 8px;
             font-size: 16px;
             outline: none;
-            transition: 0.3s;
+            box-sizing: border-box; /* Ensures padding is included in width */
         }
 
         .input-box:focus {
-            border-color: #10b981;
+            border-color: #909593;
             box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.3);
         }
 
         /* Login Button */
         .login-button {
-            width: 100%;
+            width: 80%;
             padding: 12px;
-            background-color: #10b981;
+            background-color: #262827;
             color: white;
             font-size: 18px;
             border: none;
@@ -194,10 +213,11 @@
         .signup-text {
             margin-top: 15px;
             font-size: 14px;
+            color: #232625
         }
 
         .signup-text a {
-            color: #10b981;
+            color: #232625 !important;
             text-decoration: none;
         }
 
@@ -215,7 +235,7 @@
 <body>
     <div class="navbar">
         <div class="logo">
-            <img src="nav1.jpeg" alt="Youth Startup Logo">
+            <img src="nav.jpeg" alt="Youth Startup Logo">
         </div>
         <div class="menu">
             <a href="index.html">Home</a>
@@ -229,10 +249,7 @@
     </div>
 
     <div class="login-container">
-        <!-- Left Section: Image -->
-        <div class="image-section">
-            <!-- <img src="https://source.unsplash.com/450x450/?technology" alt="Login Image"> -->
-        </div>
+        
 
         <!-- Right Section: Login Form -->
         <div class="form-section">
@@ -247,7 +264,7 @@
             </form>
 
             <p class="signup-text">
-                Don't have an account? <a href="#">Sign up</a>
+                Don't have an account? <a href="signup.html">Sign up</a>
             </p>
         </div>
     </div>
