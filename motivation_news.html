@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThriveOn</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #e0eafc, #cfdef3);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            color: white;
+            padding: 25px;
+            font-size: 30px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        main {
+            padding: 30px;
+        }
+
+        .quote-box, .tips-box {
+            background: white;
+            padding: 30px;
+            margin: 20px auto;
+            width: 70%;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            font-size: 22px;
+            transition: transform 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-box:hover, .tips-box:hover {
+            transform: scale(1.05);
+        }
+
+        .news-section, .tips-section {
+            margin-top: 30px;
+        }
+
+        .news-item, .tips-item {
+            background: white;
+            margin: 20px auto;
+            width: 70%;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .news-item:hover, .tips-item:hover {
+            transform: scale(1.03);
+        }
+
+        .news-item a, .tips-item a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .news-item a:hover, .tips-item a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            padding: 15px 20px;
+            font-size: 18px;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #2a5298, #1e3c72);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="nav1.jpeg" alt="Youth Startup Logo">
+        </div>
+        <div class="menu">
+            <a href="index.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="features.html">OurFeatures</a>
+            
+        </div>
+        <div class="right-menu">
+            <div id="google_translate_element"></div>
+        </div>
+    </div>
+
+
+<header>ThriveOn - Elevate Your Business Mindset</header>
+
+<main>
+    <div class="quote-box">
+        <h2>Business Wisdom</h2>
+        <p id="quote">Loading quote...</p>
+        <button onclick="fetchQuote()">Get Inspired</button>
+    </div>
+
+    <div class="tips-box">
+        <h2>Business Growth Tips</h2>
+        <p id="tips">Loading tips...</p>
+        <button onclick="fetchTips()">New Tip</button>
+    </div>
+
+    <div class="news-section">
+        <h2>Latest Business Insights</h2>
+        <div id="news-container">Loading news...</div>
+    </div>
+</main>
+
+<script>
+    async function fetchQuote() {
+        const response = await fetch("https://api.quotable.io/random?tags=business");
+        const data = await response.json();
+        document.getElementById("quote").innerText = `"${data.content}" - ${data.author}`;
+    }
+
+    async function fetchTips() {
+        const tips = [
+            "Focus on customer satisfaction to drive long-term success.",
+            "Always be learning – the best entrepreneurs never stop improving.",
+            "Networking is key! Build meaningful business relationships.",
+            "Prioritize time management to maximize productivity.",
+            "Innovation is the key to staying ahead of the competition."
+        ];
+        const randomTip = tips[Math.floor(Math.random() * tips.length)];
+        document.getElementById("tips").innerText = randomTip;
+    }
+
+    async function fetchNews() {
+        const apiKey = "YOUR_NEWSAPI_KEY";
+        const response = await fetch(`https://newsapi.org/v2/everything?q=business&sortBy=publishedAt&apiKey=${apiKey}`);
+        const data = await response.json();
+
+        let newsContainer = document.getElementById("news-container");
+        newsContainer.innerHTML = "";
+
+        data.articles.slice(0, 5).forEach(article => {
+            let div = document.createElement("div");
+            div.className = "news-item";
+            div.innerHTML = `<h3>${article.title}</h3>
+                             <p>${article.description || "Click below to read more."}</p>
+                             <a href="${article.url}" target="_blank">Read More</a>`;
+            newsContainer.appendChild(div);
+        });
+    }
+
+    fetchQuote();
+    fetchTips();
+    fetchNews();
+    setInterval(fetchQuote, 30000);
+    setInterval(fetchTips, 45000);
+    setInterval(fetchNews, 300000);
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const isLoggedIn = localStorage.getItem("isLoggedIn"); // Check login status
+  console.log("islogged in",isLoggedIn)
+      const loginBtn = document.getElementById("login-btn");
+      const signupBtn = document.getElementById("signup-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      if (isLoggedIn === "true") {
+        loginBtn.style.display = "none";
+        signupBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+      } else {
+        loginBtn.style.display = "inline-block";
+        signupBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+      }
+
+      if (typeof google !== "undefined" && google.translate) {
+        initTranslate(); // Ensure it runs again
+    } else {
+        setTimeout(loadGoogleTranslate, 500);
+    }
+    });
+
+    function logoutUser() {
+    fetch("https://hackup-backend-1.onrender.com/auth/logout", { 
+        method: "POST",
+        credentials: "include" // Ensure cookies are sent with the request
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            localStorage.removeItem("isLoggedIn"); // ✅ Clear login status
+            window.location.reload(); // ✅ Refresh UI
+        } else {
+            alert("Logout failed!"); // Handle logout failure
+        }
+    })
+    .catch(error => console.error("Logout error:", error));
+
+    if (typeof google !== "undefined" && google.translate) {
+        initTranslate(); // Ensure it runs again
+    } else {
+        setTimeout(loadGoogleTranslate, 500);
+    }
+}
+
+
+</script>
+
+</body>
+</html>

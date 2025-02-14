@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 10;
+    }
+    .navbar img {
+      height: 70px;
+    }
+    .navbar .menu {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+    .navbar .button {
+      background-color: #10b981;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    .navbar .button:hover {
+      background-color: #0e0f0e;
+    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eef2f7;
+            color: #333;
+            text-align: center;
+        }
+        /* Header */
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column; /* Stack title & nav */
+            align-items: center;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: bold;
+        }
+        header button {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        header button:hover {
+            background-color: #333;
+        }
+        /* Navigation Bar */
+        nav {
+            background: linear-gradient(to right, #0056b3, #003f7f);
+            padding: 15px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center; /* Center the nav bar */
+            gap: 30px;
+            width: 100%; /* Ensure it spans full width */
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+        }
+        nav a:hover {
+            color: #ffcc00;
+            transform: translateY(-2px);
+        }
+        /* Main Content */
+        main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 30px;
+            gap: 20px;
+        }
+        /* Sections */
+        section {
+            background-color: white;
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+        section:hover {
+            transform: translateY(-5px);
+        }
+        h2 {
+            color: #007bff;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        /* Input & Button Styles */
+        input {
+            width: 85%;
+            padding: 10px;
+            margin-top: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin-top: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        /* Task List Styles */
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .task-list li {
+            background-color: #f8f9fa;
+            padding: 12px;
+            margin: 6px 0;
+            border-radius: 6px;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-list li .delete-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        .task-list li .delete-btn:hover {
+            background-color: #cc0000;
+        }
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            main {
+                flex-direction: column;
+                align-items: center;
+            }
+            section {
+                width: 100%;
+            }
+            nav {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">
+          <img src="nav1.jpeg" alt="Youth Startup Logo" height="50">
+        </div>
+        <div class="menu">
+          <a href="index.html">Home</a>
+          <a href="features.html">OurFeatures</a>
+          <a href="about.html">AboutUs</a>
+        </div>
+        <div class="right-menu">
+          <a href="login.html" class="button" id="login-btn">LogIn</a>
+          <a href="signup.html" class="button" id="signup-btn">SignUp</a>
+          <a href="#" class="button" id="logout-btn" style="display: none;" onclick="logoutUser()">LogOut</a>
+          <div id="google_translate_element"></div>
+        </div>
+        
+      </div>
+    <header>
+        <h1>Resource and Task Manager</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#tasks">Tasks</a>
+            <a href="#projects">Projects</a>
+            <a href="#settings">Settings</a>
+        </nav>
+        <button>Sign Out</button>
+    </header>
+    
+    <main>
+        <section>
+            <h2>Add New Task</h2>
+            <input type="text" placeholder="Enter task description...">
+            <button>Add Task</button>
+        </section>
+        
+        <section>
+            <h2>Current Tasks</h2>
+            <ul class="task-list">
+                <li>
+                    Pending Documentation
+                    <button class="delete-btn">Delete</button>
+                </li>
+                <li>
+                    Review Team Presentation 
+                    <button class="delete-btn">Delete</button>
+                </li>
+                <li>
+                    Raising Ticket 
+                    <button class="delete-btn">Delete</button>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <script>
+        
+      document.addEventListener("DOMContentLoaded", function() {
+      const isLoggedIn = localStorage.getItem("isLoggedIn"); // Check login status
+  console.log("islogged in",isLoggedIn)
+      const loginBtn = document.getElementById("login-btn");
+      const signupBtn = document.getElementById("signup-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      if (isLoggedIn === "true") {
+        loginBtn.style.display = "none";
+        signupBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+      } else {
+        loginBtn.style.display = "inline-block";
+        signupBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+      }
+
+      if (typeof google !== "undefined" && google.translate) {
+        initTranslate(); // Ensure it runs again
+    } else {
+        setTimeout(loadGoogleTranslate, 500);
+    }
+    });
+
+    function logoutUser() {
+    fetch("https://hackup-backend-1.onrender.com/auth/logout", { 
+        method: "POST",
+        credentials: "include" // Ensure cookies are sent with the request
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            localStorage.removeItem("isLoggedIn"); // ✅ Clear login status
+            window.location.reload(); // ✅ Refresh UI
+        } else {
+            alert("Logout failed!"); // Handle logout failure
+        }
+    })
+    .catch(error => console.error("Logout error:", error));
+
+    if (typeof google !== "undefined" && google.translate) {
+        initTranslate(); // Ensure it runs again
+    } else {
+        setTimeout(loadGoogleTranslate, 500);
+    }
+}
+
+
+    </script>
+</body>
+</html>

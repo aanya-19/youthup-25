@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idea Validation Poll</title>
+    <style>
+        /* Global Styles */
+        .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 10;
+    }
+    .navbar img {
+      height: 70px;
+    }
+    .navbar .menu {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+    .navbar .button {
+      background-color: #10b981;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      margin-left: 6px;
+    }
+    .navbar .button:hover {
+      background-color: #0e0f0e;
+    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #eef1f7;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px;
+            gap: 30px;
+        }
+
+        /* Left Side */
+        .left-section {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .idea {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .vote-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .vote-buttons button {
+            padding: 12px 18px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .upvote {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .downvote {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .upvote:hover {
+            background-color: #218838;
+        }
+
+        .downvote:hover {
+            background-color: #c82333;
+        }
+
+        .vote-count {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 8px;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #0041a3);
+        }
+
+        /* Right Section (Full Height) */
+        .right-section {
+            width: 55%;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+            height: auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .right-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .right-section h3 {
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .doc-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .doc-list li {
+            background-color: #f8f9fa;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .doc-list li:hover {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">
+          <img src="nav1.jpeg" alt="Youth Startup Logo" height="50">
+        </div>
+        <div class="menu">
+          <a href="index.html">Home</a>
+          <a href="features.html">OurFeatures</a>
+          <a href="about.html">AboutUs</a>
+        </div>
+        <div class="right-menu">
+          <a href="login.html" class="button" id="login-btn">LogIn</a>
+          <a href="signup.html" class="button" id="signup-btn">SignUp</a>
+          <a href="#" class="button" id="logout-btn" style="display: none;" onclick="logoutUser()">LogOut</a>
+          <div id="google_translate_element"></div>
+        </div>
+        
+      </div>
+    <header>Idea Validation Poll</header>
+
+    <div class="container">
+        <!-- Left Side -->
+        <div class="left-section">
+            <!-- Idea Poll -->
+            <div class="box">
+                <div class="idea" id="ideaText">"AI-based Resume Analyzer"</div>
+
+                <div class="vote-buttons">
+                    <button class="upvote" onclick="vote(1)">👍 Upvote</button>
+                    <button class="downvote" onclick="vote(-1)">👎 Downvote</button>
+                </div>
+
+                <div class="vote-count" id="voteCount">Votes: 0</div>
+            </div>
+
+            <!-- Submit New Idea -->
+            <div class="box">
+                <h3>Submit Your Idea</h3>
+                <input type="text" id="newIdea" placeholder="Enter your startup idea">
+                <button class="submit-btn" onclick="submitIdea()">Submit Idea</button>
+            </div>
+        </div>
+
+        <!-- Right Side (Full Height) -->
+        <div class="right-section">
+            <h3>Generate Documents Based on Your Idea</h3>
+            <ul class="doc-list">
+                <li onclick="generateDoc('Business Plan')">📄 Business Plan</li>
+                <li onclick="generateDoc('Pitch Deck')">📊 Pitch Deck</li>
+                <li onclick="generateDoc('Market Research Report')">📑 Market Research</li>
+                <li onclick="generateDoc('Financial Projections')">💰 Financial Projections</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let votes = 0;
+
+        function vote(amount) {
+            votes += amount;
+            document.getElementById('voteCount').innerText = `Votes: ${votes}`;
+        }
+
+        function submitIdea() {
+            let newIdea = document.getElementById("newIdea").value.trim();
+            if (newIdea === "") {
+                alert("Please enter a valid startup idea!");
+                return;
+            }
+
+            document.getElementById("ideaText").innerText = `"${newIdea}"`;
+            document.getElementById("newIdea").value = "";
+            votes = 0;
+            document.getElementById('voteCount').innerText = `Votes: 0`;
+        }
+
+        function generateDoc(type) {
+            alert(`Generating ${type} document...`);
+        }
+
+        
+      document.addEventListener("DOMContentLoaded", function() {
+      const isLoggedIn = localStorage.getItem("isLoggedIn"); // Check login status
+  console.log("islogged in",isLoggedIn)
+      const loginBtn = document.getElementById("login-btn");
+      const signupBtn = document.getElementById("signup-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      if (isLoggedIn === "true") {
+        loginBtn.style.display = "none";
+        signupBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+      } else {
+        loginBtn.style.display = "inline-block";
+        signupBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+      }
+
+      if (typeof google !== "undefined" && google.translate) {
+        initTranslate(); // Ensure it runs again
+    } else {
+        setTimeout(loadGoogleTranslate, 500);
+    }
+    });
+
+    function logoutUser() {
+    fetch("https://hackup-backend-1.onrender.com/auth/logout", { 
+        method: "POST",
+        credentials: "include" // Ensure cookies are sent with the request
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            localStorage.removeItem("isLoggedIn"); // ✅ Clear login status
+            window.location.reload(); // ✅ Refresh UI
+        } else {
+            alert("Logout failed!"); // Handle logout failure
+        }
+    })
+    .catch(error => console.error("Logout error:", error));
+
+    if (typeof google !== "undefined" && google.translate) {
+        initTranslate(); // Ensure it runs again
+    } else {
+        setTimeout(loadGoogleTranslate, 500);
+    }
+}
+
+
+    </script>
+
+</body>
+</html>

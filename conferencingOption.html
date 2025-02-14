@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Pitch Deck</title>
+    <style>
+        #google_translate_element {
+            display: inline-block !important;
+            margin-left: 10px !important;  /* Adjust spacing */
+          }
+          
+          .goog-te-gadget {
+            font-family: Arial, sans-serif !important;
+            font-size: 14px !important;
+            color: #f2f1ed !important;
+          }
+          
+          .goog-te-gadget select {
+            background: #f2f1ed;  /* Match button color */
+            color: rgb(15, 15, 15);
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            border: solid 1px #0e0f0e;
+          }
+          
+          /* Fix dropdown overlapping */
+          .goog-te-gadget .goog-te-combo {
+            height: 30px;
+            font-size: 14px;
+            padding: 5px;
+          }
+          
+          /* Ensure dropdown stays inside navbar */
+          .goog-te-gadget {
+            display: flex;
+            align-items: center;
+          }
+          
+          /* Hide "Powered by Google" */
+          .goog-logo-link, .goog-te-gadget span {
+            display: none !important;
+          }
+          
+          /* Hide floating translate bar */
+          body > .skiptranslate {
+            display: none !important;
+          }
+          
+        body {
+          font-family: 'Arial', sans-serif;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          background-color: #f2f1ed;
+          color: #333;
+        }
+        .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px 20px;
+          background-color: #f2f1ed;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          position: relative;
+          z-index: 10;
+          width: 100%;
+        }
+        .navbar img {
+          height: 70px;
+        }
+        .navbar .menu {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          
+        }
+        .navbar a {
+          text-decoration: none;
+          color: #333;
+          font-weight: bold;
+        }
+        .navbar .button {
+          background-color: #090a0a;
+          color: #fff;
+          padding: 8px 15px;
+          border-radius: 5px;
+          transition: background-color 0.3s;
+        }
+        .navbar .button:hover {
+          background-color: #0e0f0e;
+        }
+        .menu {
+            display: flex;
+            gap: 20px;
+        }
+        .navbar a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+        .button {
+            background-color: #10b981;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-left: 6px;
+        }
+        .button:hover {
+            background-color: #0e0f0e;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        header {
+            background-color: #f2f1ed;
+            
+        }
+
+        #main-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 90%;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid #0e0e0e;
+            margin: 10px;
+            width: 45%;
+        }
+
+        video, iframe {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #2d2c30;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #29292b;
+        }
+
+        .upload-container {
+            margin-top: 15px;
+        }
+
+        #sidebar {
+            width: 90%;
+            background: #29292b;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow-y: auto;
+        }
+
+        .video-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+          <img src="nav.jpeg" alt="Youth Startup Logo" height="50" >
+        </div>
+        <div class="menu">
+          <a href="index.html">Home</a>
+          <a href="features.html">OurFeatures</a>
+          <a href="about.html">AboutUs</a>
+        </div>
+        <div class="right-menu">
+          <a href="login.html" class="button" id="login-btn">LogIn</a>
+          <a href="signup.html" class="button" id="signup-btn">SignUp</a>
+          <a href="#" class="button" id="logout-btn" style="display: none;" onclick="logoutUser()">LogOut</a>
+          <div id="google_translate_element"></div>
+        </div>
+        
+      </div>
+    <header>
+        <h1>Live Pitch Deck</h1>
+    </header>
+    
+    <div id="main-content">
+        <div class="container">
+            <h2>Live Video Pitch</h2>
+            <video id="videoPlayer" autoplay playsinline></video>
+            <div class="controls">
+                <button onclick="startStream()">📡 Start Live</button>
+                <button onclick="stopStream()">🛑 Stop</button>
+                <button onclick="toggleMute()">🔇/🔊 Mute</button>
+                <button onclick="toggleFullscreen()">⛶ Fullscreen</button>
+            </div>
+        </div>
+
+        <div class="container">
+            <h2>Presentation Slides</h2>
+            <div id="pitchDeck">Upload your pitch deck to view slides</div>
+            <div class="controls">
+                <button id="prevBtn" onclick="prevSlide()" disabled>⬅ Previous</button>
+                <button id="nextBtn" onclick="nextSlide()" disabled>Next ➡</button>
+            </div>
+            <div class="upload-container">
+                <input type="file" id="fileInput" accept="image/*,application/pdf" multiple>
+            </div>
+        </div>
+    </div>
+
+    <div id="sidebar">
+        <h2>Previous Pitches</h2>
+        <div id="video-list"></div>
+    </div>
+
+    <script>
+        function loadGoogleTranslate() {
+            if (!document.querySelector("script[src*='translate.google.com']")) {
+              let script = document.createElement("script");
+              script.src = "https://translate.google.com/translate_a/element.js?cb=initTranslate";
+              script.async = true;
+              document.head.appendChild(script);
+            }
+          }
+        
+          function initTranslate() {
+            new google.translate.TranslateElement(
+              { pageLanguage: 'en' },
+              'google_translate_element'
+            );
+          }
+        
+          // Load script after a slight delay to ensure it runs
+          setTimeout(loadGoogleTranslate, 1000);
+        let video = document.getElementById("videoPlayer");
+        let stream = null;
+        let recordedChunks = [];
+        let mediaRecorder;
+        let slides = [];
+        let currentSlideIndex = 0;
+
+        async function startStream() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                video.srcObject = stream;
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = (event) => recordedChunks.push(event.data);
+                mediaRecorder.start();
+            } catch (error) {
+                alert("Error accessing webcam: " + error);
+            }
+        }
+
+        function stopStream() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                mediaRecorder.stop();
+                saveVideo();
+            }
+        }
+
+        function toggleMute() {
+            if (stream) {
+                let audioTrack = stream.getAudioTracks()[0];
+                audioTrack.enabled = !audioTrack.enabled;
+            }
+        }
+
+        function toggleFullscreen() {
+            if (video.requestFullscreen) video.requestFullscreen();
+        }
+
+        function saveVideo() {
+            let blob = new Blob(recordedChunks, { type: "video/webm" });
+            let url = URL.createObjectURL(blob);
+            let caption = prompt("Enter a caption for your video:");
+            if (caption) {
+                let videoList = document.getElementById("video-list");
+                let videoItem = document.createElement("div");
+                videoItem.classList.add("video-item");
+                videoItem.innerHTML = `<p>${caption} - ${new Date().toLocaleString()}</p><video src="${url}" controls width="100%"></video>`;
+                videoList.prepend(videoItem);
+            }
+        }
+
+        document.getElementById("fileInput").addEventListener("change", function (event) {
+            let files = event.target.files;
+            slides = [];
+            currentSlideIndex = 0;
+            Array.from(files).forEach(file => {
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    slides.push(e.target.result);
+                    updateViewer();
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        function updateViewer() {
+            let pitchDeck = document.getElementById("pitchDeck");
+            if (slides.length > 0) {
+                pitchDeck.innerHTML = `<img src="${slides[currentSlideIndex]}" style="width: 100%; border-radius: 10px;">`;
+                document.getElementById("prevBtn").disabled = currentSlideIndex === 0;
+                document.getElementById("nextBtn").disabled = currentSlideIndex === slides.length - 1;
+            }
+        }
+
+        function prevSlide() { if (currentSlideIndex > 0) { currentSlideIndex--; updateViewer(); } }
+        function nextSlide() { if (currentSlideIndex < slides.length - 1) { currentSlideIndex++; updateViewer(); } }
+
+        
+      document.addEventListener("DOMContentLoaded", function() {
+      const isLoggedIn = localStorage.getItem("isLoggedIn"); // Check login status
+  console.log("islogged in",isLoggedIn)
+      const loginBtn = document.getElementById("login-btn");
+      const signupBtn = document.getElementById("signup-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      if (isLoggedIn === "true") {
+        loginBtn.style.display = "none";
+        signupBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+      } else {
+        loginBtn.style.display = "inline-block";
+        signupBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+      }
+
+      if (typeof google !== "undefined" && google.translate) {
+        initTranslate(); // Ensure it runs again
+    } else {
+        setTimeout(loadGoogleTranslate, 500);
+    }
+    });
+
+    function logoutUser() {
+    fetch("https://hackup-backend-1.onrender.com/auth/logout", { 
+        method: "POST",
+        credentials: "include" // Ensure cookies are sent with the request
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            localStorage.removeItem("isLoggedIn"); // ✅ Clear login status
+            window.location.reload(); // ✅ Refresh UI
+        } else {
+            alert("Logout failed!"); // Handle logout failure
+        }
+    })
+    .catch(error => console.error("Logout error:", error));
+
+    if (typeof google !== "undefined" && google.translate) {
+        initTranslate(); // Ensure it runs again
+    } else {
+        setTimeout(loadGoogleTranslate, 500);
+    }
+}
+
+
+    </script>
+</body>
+</html>

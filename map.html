@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Policies for Women</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://translate.google.com/translate_a/element.js?cb=initTranslate"></script>
+    <style>
+        #google_translate_element {
+            display: inline-block !important;
+            margin-left: 10px !important;  /* Adjust spacing */
+          }
+          
+          .goog-te-gadget {
+            font-family: Arial, sans-serif !important;
+            font-size: 14px !important;
+            color: #f2f1ed !important;
+          }
+          
+          .goog-te-gadget select {
+            background: #f2f1ed;  /* Match button color */
+            color: rgb(15, 15, 15);
+            border: none;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+            border: solid 1px #0e0f0e;
+          }
+          
+          /* Fix dropdown overlapping */
+          .goog-te-gadget .goog-te-combo {
+            height: 30px;
+            font-size: 14px;
+            padding: 5px;
+          }
+          
+          /* Ensure dropdown stays inside navbar */
+          .goog-te-gadget {
+            display: flex;
+            align-items: center;
+          }
+          
+          /* Hide "Powered by Google" */
+          .goog-logo-link, .goog-te-gadget span {
+            display: none !important;
+          }
+          
+          /* Hide floating translate bar */
+          body > .skiptranslate {
+            display: none !important;
+          }
+          
+        body {
+          font-family: 'Arial', sans-serif;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          background-color: #f2f1ed;
+          color: #333;
+        }
+        .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px 20px;
+          background-color: #f2f1ed;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          position: relative;
+          z-index: 10;
+        }
+        .navbar img {
+          height: 70px;
+        }
+        .navbar .menu {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          
+        }
+        .navbar a {
+          text-decoration: none;
+          color: #333;
+          font-weight: bold;
+        }
+        .navbar .button {
+          background-color: #090a0a;
+          color: #fff;
+          padding: 8px 15px;
+          border-radius: 5px;
+          transition: background-color 0.3s;
+        }
+        .navbar .button:hover {
+          background-color: #0e0f0e;
+        }
+        .map-policy-container { display: flex; flex-direction: column; align-items: center; margin-top: 30px; width: 100%; }
+        .map-box, .policy-box { background: #f2f1ed; border-radius: 12px; box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1); padding: 20px; width: 90%; max-width: 1200px; margin-bottom: 20px;border:1px solid black; }
+        #map { width: 100%; height: 500px; border-radius: 10px; }
+        #policy-box { font-size: 16px; color: #333; padding: 15px; }
+        #policy-box h3 { margin-bottom: 10px; font-size: 22px; color: #101111; text-align: center; }
+        #policy-box ul { padding-left: 20px; }
+        #policy-box li { background: #f9f9f9; padding: 10px; margin-bottom: 8px; border-radius: 5px; list-style-type: none; border-left: 5px solid #030303; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo"><img src="nav.jpeg" alt="Startup Logo"></div>
+        <div class="menu">
+            <a href="index.html">Home</a> 
+            <a href="features.html">OurFeatures</a> 
+            <a href="about.html">About Us</a> 
+        </div>
+        <div class="right-menu">
+            <a href="login.html" class="button" id="login-btn">LogIn</a>
+            <a href="signup.html" class="button" id="signup-btn">SignUp</a>
+            <a href="#" class="button" id="logout-btn" style="display: none;" onclick="logoutUser()">LogOut</a>
+            <div id="google_translate_element"></div>
+          </div>
+    </div>
+
+    <h2 style="text-align: center; margin-top: 20px;">Explore Startup Policies for Young Women – Country Wise</h2>
+
+    <div class="map-policy-container">
+        <div class="map-box"><h3 style="text-align: center;">Interactive Map</h3><div id="map"></div></div>
+        <div class="policy-box"><h3>Startup Policies for Women</h3><div id="policy-box"><p>Click on a country to see policies.</p></div></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+       
+        let policies = {}; // Global object to store policies
+
+        // Load and parse CSV
+        async function loadPolicies() {
+            try {
+                const response = await fetch("Women_Entrepreneurship_Policies.csv");
+                const csvText = await response.text();
+                const rows = csvText.split("\n").map(row => row.split(","));
+
+                for (let i = 1; i < rows.length; i++) {
+                    let country = rows[i][0]?.trim();
+                    let policy = rows[i][1]?.trim();
+                    if (country && policy) {
+                        if (!policies[country.toLowerCase()]) {
+                            policies[country.toLowerCase()] = [];
+                        }
+                        policies[country.toLowerCase()].push(policy);
+                    }
+                }
+                console.log("Loaded Policies:", policies);
+            } catch (error) {
+                console.error("Error loading CSV:", error);
+            }
+        }
+
+        // Initialize Map
+        let map = L.map("map").setView([20, 0], 2);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap contributors" }).addTo(map);
+
+        // Load GeoJSON & Handle Click
+        fetch("world.geo.json")
+            .then(response => response.json())
+            .then(geojsonData => {
+                L.geoJSON(geojsonData, {
+                    onEachFeature: function (feature, layer) {
+                        layer.on("click", function () {
+                            let country = feature.properties.name.trim().toLowerCase();
+                            displayPolicies(country);
+                        });
+                    }
+                }).addTo(map);
+            })
+            .catch(error => console.error("Error loading GeoJSON:", error));
+
+        // Display Policies
+        function displayPolicies(country) {
+            console.log("Clicked Country:", country);
+            const policyBox = document.getElementById("policy-box");
+            policyBox.innerHTML = `<h3>${country.charAt(0).toUpperCase() + country.slice(1)}</h3>`;
+
+            if (policies[country] && policies[country].length > 0) {
+                policyBox.innerHTML += `<ul>${policies[country].map(policy => `<li>${policy}</li>`).join("")}</ul>`;
+            } else {
+                policyBox.innerHTML += "<p>No data available</p>";
+            }
+        }
+
+        // Load CSV policies
+        document.addEventListener("DOMContentLoaded", loadPolicies);
+
+        
+      document.addEventListener("DOMContentLoaded", function() {
+      const isLoggedIn = localStorage.getItem("isLoggedIn"); // Check login status
+  console.log("islogged in",isLoggedIn)
+      const loginBtn = document.getElementById("login-btn");
+      const signupBtn = document.getElementById("signup-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      if (isLoggedIn === "true") {
+        loginBtn.style.display = "none";
+        signupBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+      } else {
+        loginBtn.style.display = "inline-block";
+        signupBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+      }
+
+      if (typeof google !== "undefined" && google.translate) {
+        initTranslate(); // Ensure it runs again
+    } else {
+        setTimeout(loadGoogleTranslate, 500);
+    }
+    });
+
+    function logoutUser() {
+    fetch("https://hackup-backend-1.onrender.com/auth/logout", { 
+        method: "POST",
+        credentials: "include" // Ensure cookies are sent with the request
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            localStorage.removeItem("isLoggedIn"); // ✅ Clear login status
+            window.location.reload(); // ✅ Refresh UI
+        } else {
+            alert("Logout failed!"); // Handle logout failure
+        }
+    })
+    .catch(error => console.error("Logout error:", error));
+
+    if (typeof google !== "undefined" && google.translate) {
+        initTranslate(); // Ensure it runs again
+    } else {
+        setTimeout(loadGoogleTranslate, 500);
+    }
+}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Leaderboard & Voting</title>
+    <style>
+          .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 10;
+    }
+    .navbar img {
+      height: 70px;
+    }
+    .navbar .menu {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+    .navbar .button {
+      background-color: #10b981;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      margin-left: 6px;
+    }
+    .navbar .button:hover {
+      background-color: #0e0f0e;
+    }
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #007bff;
+        color: white;
+        padding: 15px;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      #leaderboard {
+        width: 80%;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .startup {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        margin: 10px 0;
+        background: #e9ecef;
+        border-radius: 5px;
+      }
+
+      .vote-buttons {
+        display: flex;
+        gap: 10px;
+      }
+
+      button {
+        padding: 10px 15px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .rank {
+        font-weight: bold;
+        font-size: 18px;
+        color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="logo">
+        <img src="nav1.jpeg" alt="Youth Startup Logo" height="50">
+      </div>
+      <div class="menu">
+        <a href="index.html">Home</a>
+        <a href="features.html">OurFeatures</a>
+        <a href="about.html">AboutUs</a>
+      </div>
+      <div class="right-menu">
+        <a href="login.html" class="button" id="login-btn">LogIn</a>
+        <a href="signup.html" class="button" id="signup-btn">SignUp</a>
+        <a href="#" class="button" id="logout-btn" style="display: none;" onclick="logoutUser()">LogOut</a>
+        <div id="google_translate_element"></div>
+      </div>
+      
+    </div>
+    <header>Live Leaderboard & Voting</header>
+
+    <main>
+      <div id="leaderboard">
+        <h2>Leaderboard</h2>
+        <div id="startup-list">
+          <!-- Startups will be dynamically inserted here -->
+        </div>
+      </div>
+    </main>
+
+    <script>
+      let startups = [
+        { name: "Startup A", votes: 0 },
+        { name: "Startup B", votes: 0 },
+        { name: "Startup C", votes: 0 },
+      ];
+
+      function renderLeaderboard() {
+        let list = document.getElementById("startup-list");
+        list.innerHTML = "";
+
+        // Sort by votes (descending)
+        startups.sort((a, b) => b.votes - a.votes);
+
+        startups.forEach((startup, index) => {
+          let div = document.createElement("div");
+          div.className = "startup";
+          div.innerHTML = `
+                <span class="rank">${index + 1}</span>
+                <span>${startup.name}</span>
+                <span>Votes: ${startup.votes}</span>
+                <div class="vote-buttons">
+                    <button onclick="vote('${startup.name}', 1)">👍</button>
+                    <button onclick="vote('${startup.name}', -1)">👎</button>
+                </div>
+            `;
+          list.appendChild(div);
+        });
+      }
+
+      function vote(name, amount) {
+        let startup = startups.find((s) => s.name === name);
+        if (startup) {
+          startup.votes += amount;
+          renderLeaderboard();
+        }
+      }
+
+      // Initial render
+      renderLeaderboard();
+
+      
+      document.addEventListener("DOMContentLoaded", function() {
+      const isLoggedIn = localStorage.getItem("isLoggedIn"); // Check login status
+  console.log("islogged in",isLoggedIn)
+      const loginBtn = document.getElementById("login-btn");
+      const signupBtn = document.getElementById("signup-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      if (isLoggedIn === "true") {
+        loginBtn.style.display = "none";
+        signupBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+      } else {
+        loginBtn.style.display = "inline-block";
+        signupBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+      }
+
+      if (typeof google !== "undefined" && google.translate) {
+        initTranslate(); // Ensure it runs again
+    } else {
+        setTimeout(loadGoogleTranslate, 500);
+    }
+    });
+
+    function logoutUser() {
+    fetch("https://hackup-backend-1.onrender.com/auth/logout", { 
+        method: "POST",
+        credentials: "include" // Ensure cookies are sent with the request
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            localStorage.removeItem("isLoggedIn"); // ✅ Clear login status
+            window.location.reload(); // ✅ Refresh UI
+        } else {
+            alert("Logout failed!"); // Handle logout failure
+        }
+    })
+    .catch(error => console.error("Logout error:", error));
+
+    if (typeof google !== "undefined" && google.translate) {
+        initTranslate(); // Ensure it runs again
+    } else {
+        setTimeout(loadGoogleTranslate, 500);
+    }
+}
+
+
+    </script>
+  </body>
+</html>
